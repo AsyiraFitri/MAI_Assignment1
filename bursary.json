@@ -1,0 +1,50 @@
+[
+  {
+    "AidType": "Bursary",
+    "Name": "Higher Education Community Bursary",
+    "Citizenship": "Citizen",
+    "MinPCI": 0,
+    "MaxPCI": 1100,
+    "MinGHI": 0,
+    "MaxGHI": 4400,
+    "Eligibility": "Full-time government-subsidized diploma student",
+    "Value": [
+      {
+        "Condition": "PCI < $751 or GHI < $3,001",
+        "Amount": "$2,950"
+      },
+      {
+        "Condition": "PCI $751–$1,100 or GHI $3,001–$4,400",
+        "Amount": "$2,600"
+      }
+    ],
+    "Disbursement": "Award disbursed in two tranches via GIRO, minus any outstanding tuition fees at the point of disbursement",
+    "ApplicationMethod": "Apply via NPal Student Portal",
+    "ApplicationPeriod": "Second application exercise for AY2025 will be open in July 2025",
+    "AdditionalNotes": "Top-up Student Aid Grant to defray tuition fees and educational expenses will be accorded automatically"
+  },
+  {
+    "AidType": "Bursary",
+    "Name": "Higher Education Bursary",
+    "Citizenship": "Citizen",
+    "MinPCI": 1101,
+    "MaxPCI": 2500,
+    "MinGHI": 4401,
+    "MaxGHI": 10000,
+    "Eligibility": "Full-time government-subsidized diploma student",
+    "Value": [
+      {
+        "Condition": "PCI $1,101 to $1,875 or GHI $4,401 to $7,500",
+        "Amount": "$2,000"
+      },
+      {
+        "Condition": "PCI $1,876 to $2,500 or GHI $7,501 to $10,000",
+        "Amount": "$900"
+      }
+    ],
+    "Disbursement": "Award disbursed in two tranches via GIRO, minus any outstanding tuition fees at the point of disbursement",
+    "ApplicationMethod": "Apply via NPal Student Portal",
+    "ApplicationPeriod": "Second application exercise for AY2025 will be open in July 2025",
+    "AdditionalNotes": "Funded by the Government to support lower- to middle-income Singaporean students"
+  }
+]
