@@ -99,14 +99,23 @@ module.exports = async (req, res) => {
     // Step 3: Get directions
     const directions = await getDirections(fromCoordinates, toCoordinates, mode);
 
-    if (!directions) {
-      return res.status(404).json({ output: "No route found. Please try again." });
+    // Check if directions are too short (edge case)
+    if (!directions || directions.length === 0) {
+      return res.status(404).json({
+        output: `No detailed route found from ${from} to ${to}. This might be due to the locations being very close. You can use the Google Maps link below for navigation.`
+      });
     }
 
-    // Prepare the Google Maps link for easy navigation
+    // Create the Google Maps link correctly
     const gmapLink = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(from)}&destination=${encodeURIComponent(to)}&travelmode=${mode}`;
 
-    // Return the route output with directions and Google Maps link
+    // If the route is too short, provide a more suitable message
+    if (directions.length === 1 && directions[0].includes('head')) {
+      return res.status(200).json({
+        output: `Route from ${from} to ${to} is very short. Here’s the direction:\n\n${directions[0]}\n\n📍 Google Maps: ${gmapLink}`
+      });
+    }
+
     return res.status(200).json({
       output: `Route from ${from} to ${to}:\n\n${directions.join('\n')}\n\n📍 Google Maps: ${gmapLink}`
     });
