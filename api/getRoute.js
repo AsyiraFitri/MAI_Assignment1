@@ -5,7 +5,7 @@ const GOOGLE_API_KEY = 'AIzaSyAOanXt4eoGWy6z4Au9phjX3AGhMfdfbf8';
 
 // Helper function to get autocomplete suggestions
 async function getPlaceSuggestion(input, location) {
-  const radius = 350; // Search radius (in meters)
+  const radius = 1000; // Search radius (in meters)
   const placesUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(input)}&location=${location.lat},${location.lng}&radius=${radius}&key=${GOOGLE_API_KEY}`;
 
   try {
