@@ -40,7 +40,7 @@ async function getCoordinatesFromAddress(address) {
   }
 }
 
-// Helper function to fetch directions
+// Helper function to fetch directions with detailed steps
 async function getDirections(fromCoordinates, toCoordinates, mode = "walking") {
   const directionsUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${fromCoordinates.lat},${fromCoordinates.lng}&destination=${toCoordinates.lat},${toCoordinates.lng}&mode=${mode}&key=${GOOGLE_API_KEY}`;
 
@@ -72,10 +72,10 @@ module.exports = async (req, res) => {
   }
 
   // Get session variables (from and to locations)
-  const { from, to, mode = "walking", watsonxSession } = req.body; // from and to as session variables
+  const { from, to, mode = "walking", watsonxSession } = req.body;
 
-  // Define your location as the center of Ngee Ann Polytechnic or based on the WatsonX session variable
-  const location = watsonxSession?.location || { lat: 1.3331, lng: 103.7759 }; // Default location (Ngee Ann coordinates)
+  // Default location (Ngee Ann coordinates, or WatsonX session)
+  const location = watsonxSession?.location || { lat: 1.3331, lng: 103.7759 };
 
   try {
     // Step 1: Get the corrected 'from' and 'to' locations using Autocomplete
@@ -97,10 +97,10 @@ module.exports = async (req, res) => {
     // Step 3: Get directions
     const directions = await getDirections(fromCoordinates, toCoordinates, mode);
 
-    // Check if directions are too short (edge case)
+    // Check if directions are too short
     if (!directions || directions.length === 0) {
       return res.status(404).json({
-        output: `No detailed route found from ${from} to ${to}. This might be due to the locations being very close. You can use the Google Maps link below for navigation.`
+        output: `No detailed route found from ${from} to ${to}. You can use the Google Maps link below for navigation.`
       });
     }
 
