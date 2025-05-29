@@ -3,7 +3,7 @@ const axios = require('axios');
 // Replace with your Google API key
 const GOOGLE_API_KEY = 'AIzaSyAOanXt4eoGWy6z4Au9phjX3AGhMfdfbf8';
 
-// Coordinates for Ngee Ann Polytechnic
+// Coordinates for Ngee Ann Polytechnic (default coordinates)
 const ngeeAnnPolyCoordinates = {
   lat: 1.3331,
   lng: 103.7759,
@@ -28,7 +28,7 @@ async function getPlaceSuggestion(input) {
   }
 }
 
-// Helper function to process 'from' or 'to' location
+// Helper function to process 'from' or 'to' location and get coordinates
 async function processLocation(location) {
   if (!location) {
     // Default to Ngee Ann Polytechnic if no location is provided
@@ -37,8 +37,7 @@ async function processLocation(location) {
 
   // Get suggested location using Autocomplete
   const suggestedLocation = await getPlaceSuggestion(location);
-  
-  // Return either the suggested location or the default coordinates
+
   if (suggestedLocation) {
     // Attempt to get coordinates of the suggested place for more accuracy
     return await getCoordinatesFromAddress(suggestedLocation);
@@ -50,12 +49,12 @@ async function processLocation(location) {
 // Geocode a location (get its coordinates from an address or name)
 async function getCoordinatesFromAddress(address) {
   const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${GOOGLE_API_KEY}`;
-  
+
   try {
     const response = await axios.get(geocodeUrl);
     const location = response.data.results[0]?.geometry?.location;
     if (location) {
-      return location;
+      return location; // Return the coordinates (lat, lng)
     }
     return ngeeAnnPolyCoordinates; // Default coordinates if geocoding fails
   } catch (error) {
@@ -80,7 +79,13 @@ module.exports = async (req, res) => {
     const directionsUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${fromLocation.lat},${fromLocation.lng}&destination=${toLocation.lat},${toLocation.lng}&mode=${mode}&key=${GOOGLE_API_KEY}`;
 
     const response = await axios.get(directionsUrl);
+
+    // Check if the response contains routes and steps
     const steps = response.data.routes[0]?.legs[0]?.steps || [];
+
+    if (steps.length === 0) {
+      return res.status(404).json({ output: "No route found. Please try again." });
+    }
 
     // Prepare the directions step-by-step
     const directions = steps.map((step, i) => {
