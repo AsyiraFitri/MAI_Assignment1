@@ -1,0 +1,61 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Location Synonyms API",
+    "description": "API to get coordinates based on a synonym.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://mai-assignment1-9tuhhmhzi-asyira-fitris-projects.vercel.app/api/coordinates",
+      "description": "Production Server"
+    }
+  ],
+  "paths": {
+    "/getCoordinates": {
+      "get": {
+        "summary": "Get Coordinates based on synonym",
+        "description": "This endpoint fetches the coordinates from the database based on the synonym provided.",
+        "operationId": "getCoordinates",
+        "parameters": [
+          {
+            "name": "synonym",
+            "in": "query",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "example": "New York City"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successfully fetched coordinates",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "coordinates": {
+                      "type": "string",
+                      "example": "40.7128, -74.0060"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "No synonym provided"
+          },
+          "404": {
+            "description": "No matching coordinates found"
+          },
+          "500": {
+            "description": "Failed to connect to the database"
+          }
+        }
+      }
+    }
+  }
+}
