@@ -13,19 +13,16 @@ const ngeeAnnPolyCoordinates = {
 async function getPlaceSuggestion(input) {
   const radius = 350; // Search radius within Ngee Ann Polytechnic (in meters)
 
-  // If input doesn't already contain "Ngee Ann", append it
-  if (!input.toLowerCase().includes("ngee ann")) {
-    input += " Ngee Ann";  // Append "Ngee Ann" only if not already part of the input
-  }
-
+  // We keep strictbounds so the results are limited to Ngee Ann Polytechnic
   const placesUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(input)}&location=${ngeeAnnPolyCoordinates.lat},${ngeeAnnPolyCoordinates.lng}&radius=${radius}&strictbounds=true&key=${GOOGLE_API_KEY}`;
 
   try {
     const response = await axios.get(placesUrl);
     const predictions = response.data.predictions;
 
+    // Check if predictions are returned
     if (predictions.length > 0) {
-      return predictions[0].description; // Suggest the first match as the corrected location
+      return predictions[0].description; // Return the description of the first match
     }
     return null; // No suggestions found
   } catch (error) {
