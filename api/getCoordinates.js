@@ -1,23 +1,17 @@
 const ibmdb = require('ibm_db');  // DB2 Node.js driver
-const bodyParser = require('body-parser');
-const cors = require('cors');
 
-// Express App Setup
-const app = require('express')();
-app.use(cors());
-app.use(bodyParser.json());
+// This is the handler Vercel will call when the POST request is made to /api/getCoordinates
+module.exports = async (req, res) => {
+  // Get 'from' and 'to' from the request body
+  const { from, to } = req.body;
 
-// DB2 Connection string (use environment variables for security)
-const db2ConnString = `DATABASE=${process.env.DB2_DATABASE};HOSTNAME=${process.env.DB2_HOST};PORT=${process.env.DB2_PORT};USER=${process.env.DB2_USER};PASSWORD=${process.env.DB2_PASSWORD};SECURITY=SSL`;
-
-app.post('/getCoordinates', async (req, res) => {
-  // Directly access 'from' and 'to' from the request body
-  const { from, to } = req.body;  
-
-  // Check if both user inputs are present
+  // Check if both 'from' and 'to' inputs are present
   if (!from || !to) {
     return res.status(400).json({ error: 'Missing "from" or "to" location input' });
   }
+
+  // DB2 Connection string (use environment variables for security)
+  const db2ConnString = `DATABASE=${process.env.DB2_DATABASE};HOSTNAME=${process.env.DB2_HOST};PORT=${process.env.DB2_PORT};USER=${process.env.DB2_USER};PASSWORD=${process.env.DB2_PASSWORD};SECURITY=SSL`;
 
   try {
     // Connect to DB2
@@ -44,8 +38,4 @@ app.post('/getCoordinates', async (req, res) => {
   } catch (err) {
     return res.status(500).json({ error: 'Database connection or query failed', details: err.message });
   }
-});
-
-app.listen(3000, () => {
-  console.log('Server is running on port 3000');
-});
+};
