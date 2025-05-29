@@ -1,0 +1,241 @@
+{
+  "schemes": [
+    {
+      "scheme_name": "MENDAKI Tuition Fee Subsidy",
+      "eligibility": {
+        "citizenship": [
+          "Singapore Citizens",
+          "Singapore Permanent Residents"
+        ],
+        "income_criteria": {
+          "per_capita_income_max": 2000,
+          "note": "Per capita income (PCI) is defined as the total gross monthly household income (GHI) of immediate and non-immediate family members over the total number of immediate and non-immediate family members."
+        },
+        "permanent_resident_condition": "Singapore Permanent Residents must have executed the Tuition Grant deed with MOE before they are eligible to apply for this subsidy.",
+        "ethnicity": {
+          "descendants_of": [
+            "Malay", "Acehnese", "Ambonese", "Batak", "Bugis", "Baniarese", "Boyanese",
+            "Butonese", "Dusun", "Dayak", "Iban", "Indonesia", "Javanese", "Kadazan",
+            "Kelabit", "Minangkabau", "Murut", "Makasarese", "Melanau", "Sumatran",
+            "Sundanese", "Indonesian Extract"
+          ],
+          "double_barreled_race": "Students with double-barreled race, having one of the above as the first component, are also eligible (e.g., Malay-Arab)."
+        }
+      },
+      "subsidy_coverage": {
+        "note": "This scheme does not cover other compulsory fees charged by the polytechnic during the academic year.",
+        "tiers": [
+          {
+            "pci_max": 1400,
+            "subsidy": "100% of tuition fee"
+          },
+          {
+            "pci_min": 1401,
+            "pci_max": 1700,
+            "subsidy": "75% of tuition fee"
+          },
+          {
+            "pci_min": 1701,
+            "pci_max": 2000,
+            "subsidy": "50% of tuition fee"
+          }
+        ]
+      },
+      "application": {
+        "method": "Submit online application",
+        "period": {
+          "start_date": "2025-02-20",
+          "end_date": "2025-04-30",
+          "semester": 1
+        }
+      },
+      "contact_information": {
+        "method": "Contact MENDAKI via the contact form",
+        "purpose": "For enquiries on TTFS or other schemes and programmes offered"
+      }
+    },
+    {
+      "scheme_name": "Post Secondary Education Account (PSEA) Scheme",
+      "eligibility": {
+        "criteria": [
+          "Singapore Citizen students with balance in their PSEA (Edusave) accounts",
+          "Students with Singapore Citizen siblings with balance in their PSEA (Edusave) accounts"
+        ]
+      },
+      "coverage": {
+        "value": "Up to 100% of tuition fee and other fees",
+        "condition": "Subject to sufficient balance in the account"
+      },
+      "application": {
+        "instructions": [
+          "Check available balance in your PSEA account, and/or your sibling's if using their PSEA account",
+          "Applicants using the funds in their own or their siblings' PSEA account must submit their applications online",
+          "Applicants above 21 years old must login with their own Singpass",
+          "Applicants below 21 years old must have a parent or legal guardian complete the form on their behalf",
+          "Legal guardians must upload supporting documents as proof of legal authority",
+          "Additional documents may be required by NP for verification"
+        ],
+        "note": "Find out more information about PSEA and usage of funds.",
+        "period": {
+          "start_date": "2025-02-15",
+          "end_date": "2025-04-30",
+          "semester": 1,
+          "late_application_note": "If submitted past the closing date, the application is for the next semester unless informed otherwise via email to fin_student@np.edu.sg"
+        }
+      },
+      "contact_information": {
+        "np_email": "fin_student@np.edu.sg",
+        "psea_hotline": "6260 0777",
+        "purpose": "For enquiries about using PSEA at NP or checking PSEA account balance"
+      }
+    },
+    {
+      "scheme_name": "Tuition Fee Loan (TFL)",
+      "eligibility": {
+        "citizenship": [
+          "Singapore Citizens",
+          "Singapore Permanent Residents",
+          "International Students"
+        ],
+        "condition": "Singapore Permanent Residents and International students must have executed the Tuition Grant deed with MOE before they are eligible to apply for the loan"
+      },
+      "coverage": {
+        "value": "Up to 75% of the tuition fee only"
+      },
+      "interest_rates": {
+        "before_2024_04_01": "Average of prime rates of DBS, UOB & OCBC at about 4.75%, applicable until 31 April 2027",
+        "after_2024_04_01": {
+          "standard": "3-month compounded Singapore Overnight Rate Average (3M SORA) plus 1.5 percentage points",
+          "late_payment": "3M SORA plus 4.5 percentage points",
+          "note": "Rates may be changed by the bank from time to time"
+        },
+        "revision_note": "Interest rates are revised half-yearly based on 3M SORA published by MAS on 1 March and 1 September. Updates available on DBS website every 1 April and 1 October."
+      },
+      "interest_accrual": [
+        "1 month after graduation or after leaving the Polytechnic without completing the course",
+        "1 month after ORD for those with NS obligation"
+      ],
+      "repayment": {
+        "period": "Maximum of 10 years",
+        "amount": "Minimum of $100 per month via GIRO",
+        "commencement": [
+          "Graduating in 1st half of the year: not later than 1st June of the following year",
+          "Graduating in 2nd half of the year: not later than 1st December of the following year",
+          "With NS obligation: within one year after completion of NS",
+          "Leaving Polytechnic without completing: from the first day of the month immediately upon notification"
+        ]
+      },
+      "application": {
+        "method": "Submit online application",
+        "resources": [
+          "List of required supporting documents",
+          "Guide to obtaining digibank access",
+          "FAQs available on DBS website"
+        ],
+        "period": {
+          "start_date": "2025-02-15",
+          "end_date": "2025-04-30",
+          "semester": 1,
+          "late_application_note": "If submitted past the closing date, it is for the next semester unless informed otherwise via email to fin_student@np.edu.sg"
+        }
+      },
+      "contact_information": {
+        "dbs_hotline": "6333 0033",
+        "np_email": "fin_student@np.edu.sg",
+        "note": "Important for Apr 2024 graduates using MOE TFL: Update contact info and address via self-service portal by 30 Sept 2024"
+      }
+    },
+    {
+      "scheme_name": "CPF Education Loan Scheme",
+      "eligibility": {
+        "citizenship": [
+          "Singapore Citizens",
+          "Singapore Permanent Residents"
+        ],
+        "condition": "Permanent Residents must have executed the Tuition Grant deed with MOE before they are eligible to apply for this scheme"
+      },
+      "coverage": {
+        "value": "Up to 100% of tuition fee only",
+        "withdrawal_limit": "40% of the balance in the Ordinary Account (OA), including amounts withdrawn for education and investments"
+      },
+      "interest_rates": {
+        "rate": "Prevailing CPF interest rate on Ordinary Account, up to 3.50% p.a.",
+        "review": "Interest rate is reviewed quarterly"
+      },
+      "interest_accrual": "Interest will be charged from the time the savings are withdrawn",
+      "repayment": {
+        "period": "Maximum of 12 years",
+        "amount": "Minimum $100 per month in cash payable to CPF Board",
+        "note": "CPF savings cannot be used for repayment"
+      },
+      "repayment_commencement": [
+        "1 year after graduation",
+        "1 year after leaving the Polytechnic without completion of course"
+      ],
+      "application": {
+        "method": "Submit online application by logging in with SingPass",
+        "note": "Ensure both applicant and CPF member have valid SingPass accounts before applying",
+        "period": {
+          "start_date": "2025-02-15",
+          "end_date": "2025-04-30",
+          "semester": 1
+        }
+      },
+      "contact_information": {
+        "cpf_hotline": "1800-227-1188",
+        "purpose": "For enquiries about CPF Education Loan Scheme"
+      }
+    },
+    {
+      "scheme_name": "MOE Study Loan",
+      "eligibility": {
+        "citizenship": [
+          "Singapore Citizens",
+          "Singapore Permanent Residents"
+        ],
+        "conditions": [
+          "Singapore Permanent Residents must have executed the Tuition Grant deed with MOE before they are eligible to apply",
+          "Must have taken up the Tuition Fee Loan OR",
+          "Must have taken up the MENDAKI Tertiary Tuition Fee Subsidy OR",
+          "Must have used the CPF Education Scheme or a combination of the Tuition Fee Loan and CPF Education Scheme to pay for 100% of tuition fee"
+        ]
+      },
+      "coverage": {
+        "students_with_TFL": "Up to 25% of tuition fee plus maximum of $2,000 for living expenses",
+        "students_with_other_aid": "Up to $2,000 for living expenses"
+      },
+      "interest_rates": {
+        "before_2024_04_01": "Average of prime rates of DBS, UOB & OCBC at about 4.75%, applicable until 31 April 2027",
+        "after_2024_04_01": {
+          "standard": "3-month compounded Singapore Overnight Rate Average (3M SORA) plus 1.5 percentage points",
+          "late_payment": "3M SORA plus 4.5 percentage points"
+        },
+        "revision_note": "Rates revised half-yearly using 3M SORA from MAS site on 1 March and 1 September. Updates available on DBS website every 1 April and 1 October."
+      },
+      "interest_accrual": {
+        "no_interest": "For students with monthly per capita income not more than $500",
+        "with_interest": [
+          "For income > $500 and ≤ $2,700:",
+          "Graduating in 1st half: interest starts 1st June of graduation year",
+          "Graduating in 2nd half: interest starts 1st December of graduation year",
+          "With NS: interest starts 1st of month after NS ends",
+          "Left Polytechnic: interest starts immediately upon notification"
+        ]
+      },
+      "repayment": {
+        "period": {
+          "≤$500_income": "Maximum of 2 years",
+          "$501-$2400_income": "Maximum of 5 years"
+        },
+        "amount": "Minimum of $100 per month via GIRO"
+      },
+      "repayment_commencement": [
+        "6 months after graduation",
+        "2 months after ORD for NS obligation"
+      ],
+      "application": {
+        "method": "Approach Financial Counsellor at Student Care Centre, Blk 22 Lvl 3 or email askSAS@np.edu.sg"
+      }
+    }
+  ]
+}
