@@ -6,24 +6,22 @@ const GOOGLE_API_KEY = 'AIzaSyAOanXt4eoGWy6z4Au9phjX3AGhMfdfbf8';
 // Helper function to get autocomplete suggestions
 async function getPlaceSuggestion(input, location) {
   const radius = 350; // Search radius (in meters)
-
-  // Use location and radius to restrict the search area
-  const placesUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(input)}&location=${location.lat},${location.lng}&radius=${radius}&strictbounds=true&key=${GOOGLE_API_KEY}`;
+  const placesUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(input)}&location=${location.lat},${location.lng}&radius=${radius}&key=${GOOGLE_API_KEY}`;
 
   try {
     const response = await axios.get(placesUrl);
     const predictions = response.data.predictions;
 
-    // Return the first match
     if (predictions.length > 0) {
       return predictions[0].description;
     }
-    return null; // No suggestions found
+    return null;
   } catch (error) {
     console.error('Autocomplete Error:', error);
-    return null; // Return null in case of error
+    return null;
   }
 }
+
 
 // Helper function to get coordinates from Google Places
 async function getCoordinatesFromAddress(address) {
