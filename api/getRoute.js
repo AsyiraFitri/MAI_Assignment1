@@ -3,7 +3,7 @@ const axios = require('axios');
 // Replace with your Google API key
 const GOOGLE_API_KEY = 'AIzaSyAOanXt4eoGWy6z4Au9phjX3AGhMfdfbf8';
 
-// Coordinates for Ngee Ann Polytechnic (default coordinates)
+// Coordinates for Ngee Ann Polytechnic (center of the campus)
 const ngeeAnnPolyCoordinates = {
   lat: 1.3331,
   lng: 103.7759,
@@ -11,7 +11,7 @@ const ngeeAnnPolyCoordinates = {
 
 // Helper function to get autocomplete suggestions within Ngee Ann Polytechnic
 async function getPlaceSuggestion(input) {
-  const radius = 350; // in meters
+  const radius = 350; // Search radius within Ngee Ann Polytechnic (in meters)
 
   const placesUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(input)}&location=${ngeeAnnPolyCoordinates.lat},${ngeeAnnPolyCoordinates.lng}&radius=${radius}&strictbounds=true&key=${GOOGLE_API_KEY}`;
 
@@ -31,7 +31,7 @@ async function getPlaceSuggestion(input) {
 // Helper function to process 'from' or 'to' location and get coordinates
 async function processLocation(location) {
   if (!location) {
-    // Default to Ngee Ann Polytechnic if no location is provided
+    // Default to Ngee Ann Polytechnic center coordinates if no location is provided
     return ngeeAnnPolyCoordinates;
   }
 
