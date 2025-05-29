@@ -10,8 +10,8 @@ app.use(bodyParser.json());
 // DB2 Connection string (use environment variables for security)
 const db2ConnString = `DATABASE=${process.env.DB2_DATABASE};HOSTNAME=${process.env.DB2_HOST};PORT=${process.env.DB2_PORT};USER=${process.env.DB2_USER};PASSWORD=${process.env.DB2_PASSWORD};SECURITY=SSL`;
 
-app.post('/get_coordinates', async (req, res) => {
-  const { to, from } = req.body.session_variables;  // Accessing session variables 'to' and 'from'
+app.post('/getCoordinates', async (req, res) => {
+  const { from, to } = req.body.session_variables;  // Accessing session variables 'from' and 'to'
 
   // Check if both user inputs are present
   if (!from || !to) {
