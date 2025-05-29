@@ -11,7 +11,7 @@ const ngeeAnnPolyCoordinates = {
 
 // Helper function to get autocomplete suggestions within Ngee Ann Polytechnic
 async function getPlaceSuggestion(input) {
-  const radius = 500; // in meters
+  const radius = 350; // in meters
 
   const placesUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(input)}&location=${ngeeAnnPolyCoordinates.lat},${ngeeAnnPolyCoordinates.lng}&radius=${radius}&strictbounds=true&key=${GOOGLE_API_KEY}`;
 
