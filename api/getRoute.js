@@ -3,6 +3,23 @@ const axios = require('axios');
 // Replace with your Google API key
 const GOOGLE_API_KEY = 'AIzaSyAOanXt4eoGWy6z4Au9phjX3AGhMfdfbf8';
 
+// Helper function to get autocomplete suggestions
+async function getPlaceSuggestion(input) {
+  const placesUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(input)}&key=${GOOGLE_API_KEY}`;
+  
+  try {
+    const response = await axios.get(placesUrl);
+    const predictions = response.data.predictions;
+    if (predictions.length > 0) {
+      return predictions[0].description; // Suggest the first match as the corrected location
+    }
+    return null; // No suggestions found
+  } catch (error) {
+    console.error('Autocomplete Error:', error);
+    return null;
+  }
+}
+
 module.exports = async (req, res) => {
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Method Not Allowed' });
@@ -16,10 +33,15 @@ module.exports = async (req, res) => {
     lng: 103.7759,
   };
 
-  // If "from" and "to" are within NP, you can use NP coordinates as origin and destination
-  const fromLocation = from ? encodeURIComponent(from) : `${ngeeAnnPolyCoordinates.lat},${ngeeAnnPolyCoordinates.lng}`;
-  const toLocation = to ? encodeURIComponent(to) : `${ngeeAnnPolyCoordinates.lat},${ngeeAnnPolyCoordinates.lng}`;
+  // Step 1: Get the corrected or suggested 'from' and 'to' locations using Autocomplete
+  const fromSuggested = from ? await getPlaceSuggestion(from) : `${ngeeAnnPolyCoordinates.lat},${ngeeAnnPolyCoordinates.lng}`;
+  const toSuggested = to ? await getPlaceSuggestion(to) : `${ngeeAnnPolyCoordinates.lat},${ngeeAnnPolyCoordinates.lng}`;
 
+  // Step 2: Encode the suggested locations
+  const fromLocation = encodeURIComponent(fromSuggested);
+  const toLocation = encodeURIComponent(toSuggested);
+
+  // Step 3: Make the API call to get directions
   const directionsUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${fromLocation}&destination=${toLocation}&mode=${mode}&key=${GOOGLE_API_KEY}`;
 
   try {
@@ -36,7 +58,7 @@ module.exports = async (req, res) => {
     const gmapLink = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(from)}&destination=${encodeURIComponent(to)}&travelmode=${mode}`;
 
     return res.status(200).json({
-      output: `Route from ${from} to ${to}:\n\n${directions.join('\n')}\n\n📍 Google Maps: ${gmapLink}`
+      output: `Route from ${fromSuggested} to ${toSuggested}:\n\n${directions.join('\n')}\n\n📍 Google Maps: ${gmapLink}`
     });
   } catch (error) {
     console.error(error);
