@@ -1,0 +1,74 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "Google Maps Directions API",
+    "description": "API to get directions between two locations using Google Maps.",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://mai-assignment1-45zuzbd0p-asyira-fitris-projects.vercel.app/api"
+    }
+  ],
+  "paths": {
+    "/getRoute": {
+      "post": {
+        "summary": "Get route directions between two locations",
+        "description": "Fetch directions between 'from' and 'to' locations using Google Maps.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "from": {
+                    "type": "string",
+                    "description": "The starting location."
+                  },
+                  "to": {
+                    "type": "string",
+                    "description": "The destination location."
+                  },
+                  "mode": {
+                    "type": "string",
+                    "description": "The mode of transportation (e.g., walking, driving)."
+                  }
+                },
+                "required": ["from", "to"]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Directions fetched successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "output": {
+                      "type": "string",
+                      "description": "The route directions."
+                    },
+                    "gmapLink": {
+                      "type": "string",
+                      "description": "A link to view the route on Google Maps."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "500": {
+            "description": "Internal server error"
+          }
+        }
+      }
+    }
+  }
+}
