@@ -11,7 +11,8 @@ app.use(bodyParser.json());
 const db2ConnString = `DATABASE=${process.env.DB2_DATABASE};HOSTNAME=${process.env.DB2_HOST};PORT=${process.env.DB2_PORT};USER=${process.env.DB2_USER};PASSWORD=${process.env.DB2_PASSWORD};SECURITY=SSL`;
 
 app.post('/getCoordinates', async (req, res) => {
-  const { from, to } = req.body.session_variables;  // Accessing session variables 'from' and 'to'
+  // Directly access 'from' and 'to' from the request body
+  const { from, to } = req.body;  
 
   // Check if both user inputs are present
   if (!from || !to) {

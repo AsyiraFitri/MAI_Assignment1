@@ -2,32 +2,44 @@
   "openapi": "3.0.1",
   "info": {
     "title": "Location Synonyms API",
-    "description": "API to get coordinates based on a synonym.",
+    "description": "API to get coordinates based on synonyms.",
     "version": "1.0.0"
   },
   "servers": [
     {
-      "url": "https://mai-assignment1-9tuhhmhzi-asyira-fitris-projects.vercel.app/api/coordinates",
+      "url": "https://mai-assignment1-9tuhhmhzi-asyira-fitris-projects.vercel.app/api",
       "description": "Production Server"
     }
   ],
   "paths": {
     "/getCoordinates": {
-      "get": {
-        "summary": "Get Coordinates based on synonym",
-        "description": "This endpoint fetches the coordinates from the database based on the synonym provided.",
+      "post": {
+        "summary": "Get Coordinates based on 'from' and 'to' synonyms",
+        "description": "This endpoint fetches the coordinates for the 'from' and 'to' locations.",
         "operationId": "getCoordinates",
-        "parameters": [
-          {
-            "name": "synonym",
-            "in": "query",
-            "required": true,
-            "schema": {
-              "type": "string",
-              "example": "New York City"
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "from": {
+                    "type": "string",
+                    "description": "The starting location (e.g., 'Gate 2').",
+                    "example": "Gate 2"
+                  },
+                  "to": {
+                    "type": "string",
+                    "description": "The destination location (e.g., 'Munch Café').",
+                    "example": "Munch Café"
+                  }
+                },
+                "required": ["from", "to"]
+              }
             }
           }
-        ],
+        },
         "responses": {
           "200": {
             "description": "Successfully fetched coordinates",
@@ -36,9 +48,15 @@
                 "schema": {
                   "type": "object",
                   "properties": {
-                    "coordinates": {
+                    "from_coordinates": {
                       "type": "string",
+                      "description": "Coordinates of the 'from' location.",
                       "example": "40.7128, -74.0060"
+                    },
+                    "to_coordinates": {
+                      "type": "string",
+                      "description": "Coordinates of the 'to' location.",
+                      "example": "40.730610, -73.935242"
                     }
                   }
                 }
@@ -46,13 +64,13 @@
             }
           },
           "400": {
-            "description": "No synonym provided"
+            "description": "Missing 'from' or 'to' location input"
           },
           "404": {
-            "description": "No matching coordinates found"
+            "description": "Coordinates not found for one or both locations"
           },
           "500": {
-            "description": "Failed to connect to the database"
+            "description": "Database connection or query failed"
           }
         }
       }
