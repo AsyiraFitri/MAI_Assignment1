@@ -13,25 +13,24 @@ const ngeeAnnPolyCoordinates = {
 async function getPlaceSuggestion(input) {
   const radius = 350; // Search radius within Ngee Ann Polytechnic (in meters)
 
+  // If input doesn't already contain "Ngee Ann", append it
+  if (!input.toLowerCase().includes("ngee ann")) {
+    input += " Ngee Ann";  // Append "Ngee Ann" only if not already part of the input
+  }
+
   const placesUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(input)}&location=${ngeeAnnPolyCoordinates.lat},${ngeeAnnPolyCoordinates.lng}&radius=${radius}&strictbounds=true&key=${GOOGLE_API_KEY}`;
 
   try {
     const response = await axios.get(placesUrl);
-
-    console.log('Autocomplete API Response:', response.data);  // Debugging line
-    
     const predictions = response.data.predictions;
-    
+
     if (predictions.length > 0) {
-      // Append " Ngee Ann" to the retrieved place suggestion
-      return predictions[0].description + ' Ngee Ann';
+      return predictions[0].description; // Suggest the first match as the corrected location
     }
-    
-    console.log('No results found for input:', input);  // Debugging line
-    return null;
+    return null; // No suggestions found
   } catch (error) {
     console.error('Autocomplete Error:', error);
-    return null;  // Return null on error
+    return null; // Return null if an error occurs
   }
 }
 
@@ -44,11 +43,11 @@ async function processLocation(location) {
   const suggestedLocation = await getPlaceSuggestion(location);
 
   if (suggestedLocation) {
-    // Append " Ngee Ann" if necessary, and get coordinates for the updated location
+    // Get coordinates for the suggested location
     return await getCoordinatesFromAddress(suggestedLocation);
   }
 
-  return ngeeAnnPolyCoordinates;  // Default if no suggestion found
+  return ngeeAnnPolyCoordinates; // Default if no suggestion found
 }
 
 // Geocode a location (get its coordinates from an address or name)
@@ -59,12 +58,12 @@ async function getCoordinatesFromAddress(address) {
     const response = await axios.get(geocodeUrl);
     const location = response.data.results[0]?.geometry?.location;
     if (location) {
-      return location;  // Return the coordinates (lat, lng)
+      return location; // Return the coordinates (lat, lng)
     }
-    return ngeeAnnPolyCoordinates;  // Default coordinates if geocoding fails
+    return ngeeAnnPolyCoordinates; // Default coordinates if geocoding fails
   } catch (error) {
     console.error('Geocoding Error:', error);
-    return ngeeAnnPolyCoordinates;  // Default coordinates in case of failure
+    return ngeeAnnPolyCoordinates; // Default coordinates in case of failure
   }
 }
 
@@ -93,7 +92,7 @@ module.exports = async (req, res) => {
 
     // Prepare the directions step-by-step
     const directions = steps.map((step, i) => {
-      const instruction = step.html_instructions.replace(/<[^>]+>/g, '');  // Remove HTML tags
+      const instruction = step.html_instructions.replace(/<[^>]+>/g, ''); // Remove HTML tags
       const distance = step.distance.text;
       return `${i + 1}. ${instruction} (${distance})`;
     });
