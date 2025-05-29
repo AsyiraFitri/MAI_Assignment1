@@ -3,51 +3,29 @@ const axios = require('axios');
 // Replace with your Google API key
 const GOOGLE_API_KEY = 'AIzaSyAOanXt4eoGWy6z4Au9phjX3AGhMfdfbf8';
 
-// Coordinates for Ngee Ann Polytechnic (center of the campus)
-const ngeeAnnPolyCoordinates = {
-  lat: 1.3331,
-  lng: 103.7759,
-};
+// Helper function to get autocomplete suggestions
+async function getPlaceSuggestion(input, location) {
+  const radius = 350; // Search radius (in meters)
 
-// Helper function to get autocomplete suggestions within Ngee Ann Polytechnic
-async function getPlaceSuggestion(input) {
-  const radius = 350; // Search radius within Ngee Ann Polytechnic (in meters)
-
-  // We keep strictbounds so the results are limited to Ngee Ann Polytechnic
-  const placesUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(input)}&location=${ngeeAnnPolyCoordinates.lat},${ngeeAnnPolyCoordinates.lng}&radius=${radius}&strictbounds=true&key=${GOOGLE_API_KEY}`;
+  // Use location and radius to restrict the search area
+  const placesUrl = `https://maps.googleapis.com/maps/api/place/autocomplete/json?input=${encodeURIComponent(input)}&location=${location.lat},${location.lng}&radius=${radius}&strictbounds=true&key=${GOOGLE_API_KEY}`;
 
   try {
     const response = await axios.get(placesUrl);
     const predictions = response.data.predictions;
 
-    // Check if predictions are returned
+    // Return the first match
     if (predictions.length > 0) {
-      return predictions[0].description; // Return the description of the first match
+      return predictions[0].description;
     }
     return null; // No suggestions found
   } catch (error) {
     console.error('Autocomplete Error:', error);
-    return null; // Return null if an error occurs
+    return null; // Return null in case of error
   }
 }
 
-// Helper function to process 'from' or 'to' location and get coordinates
-async function processLocation(location) {
-  if (!location) {
-    return ngeeAnnPolyCoordinates; // Default to Ngee Ann Polytechnic if no location provided
-  }
-
-  const suggestedLocation = await getPlaceSuggestion(location);
-
-  if (suggestedLocation) {
-    // Get coordinates for the suggested location
-    return await getCoordinatesFromAddress(suggestedLocation);
-  }
-
-  return ngeeAnnPolyCoordinates; // Default if no suggestion found
-}
-
-// Geocode a location (get its coordinates from an address or name)
+// Helper function to get coordinates from Google Places
 async function getCoordinatesFromAddress(address) {
   const geocodeUrl = `https://maps.googleapis.com/maps/api/geocode/json?address=${encodeURIComponent(address)}&key=${GOOGLE_API_KEY}`;
 
@@ -57,34 +35,23 @@ async function getCoordinatesFromAddress(address) {
     if (location) {
       return location; // Return the coordinates (lat, lng)
     }
-    return ngeeAnnPolyCoordinates; // Default coordinates if geocoding fails
+    return null; // No location found
   } catch (error) {
     console.error('Geocoding Error:', error);
-    return ngeeAnnPolyCoordinates; // Default coordinates in case of failure
+    return null; // Return null in case of failure
   }
 }
 
-module.exports = async (req, res) => {
-  if (req.method !== 'POST') {
-    return res.status(405).json({ error: 'Method Not Allowed' });
-  }
-
-  const { from, to, mode = "walking" } = req.body; // Default mode to "walking"
+// Helper function to fetch directions
+async function getDirections(fromCoordinates, toCoordinates, mode = "walking") {
+  const directionsUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${fromCoordinates.lat},${fromCoordinates.lng}&destination=${toCoordinates.lat},${toCoordinates.lng}&mode=${mode}&key=${GOOGLE_API_KEY}`;
 
   try {
-    // Step 1: Get the corrected or suggested 'from' and 'to' locations using Autocomplete
-    const fromLocation = await processLocation(from);
-    const toLocation = await processLocation(to);
-
-    // Step 2: Make the API call to get directions
-    const directionsUrl = `https://maps.googleapis.com/maps/api/directions/json?origin=${fromLocation.lat},${fromLocation.lng}&destination=${toLocation.lat},${toLocation.lng}&mode=${mode}&key=${GOOGLE_API_KEY}`;
-
     const response = await axios.get(directionsUrl);
-
     const steps = response.data.routes[0]?.legs[0]?.steps || [];
 
     if (steps.length === 0) {
-      return res.status(404).json({ output: "No route found. Please try again." });
+      return null; // No route found
     }
 
     // Prepare the directions step-by-step
@@ -93,6 +60,48 @@ module.exports = async (req, res) => {
       const distance = step.distance.text;
       return `${i + 1}. ${instruction} (${distance})`;
     });
+
+    return directions; // Return directions as an array
+  } catch (error) {
+    console.error('Error fetching directions:', error);
+    return null; // Return null if directions fetching fails
+  }
+}
+
+module.exports = async (req, res) => {
+  if (req.method !== 'POST') {
+    return res.status(405).json({ error: 'Method Not Allowed' });
+  }
+
+  // Get session variables (from and to locations)
+  const { from, to, mode = "walking", watsonxSession } = req.body; // from and to as session variables
+
+  // Define your location as the center of Ngee Ann Polytechnic or based on the WatsonX session variable
+  const location = watsonxSession?.location || { lat: 1.3331, lng: 103.7759 }; // Default location (Ngee Ann coordinates)
+
+  try {
+    // Step 1: Get the corrected 'from' and 'to' locations using Autocomplete
+    const fromLocation = await getPlaceSuggestion(from, location);
+    const toLocation = await getPlaceSuggestion(to, location);
+
+    if (!fromLocation || !toLocation) {
+      return res.status(404).json({ output: "Unable to retrieve location suggestions for 'from' or 'to'." });
+    }
+
+    // Step 2: Get coordinates for both 'from' and 'to' locations
+    const fromCoordinates = await getCoordinatesFromAddress(fromLocation);
+    const toCoordinates = await getCoordinatesFromAddress(toLocation);
+
+    if (!fromCoordinates || !toCoordinates) {
+      return res.status(404).json({ output: "Unable to retrieve coordinates for one or both locations." });
+    }
+
+    // Step 3: Get directions
+    const directions = await getDirections(fromCoordinates, toCoordinates, mode);
+
+    if (!directions) {
+      return res.status(404).json({ output: "No route found. Please try again." });
+    }
 
     // Prepare the Google Maps link for easy navigation
     const gmapLink = `https://www.google.com/maps/dir/?api=1&origin=${encodeURIComponent(from)}&destination=${encodeURIComponent(to)}&travelmode=${mode}`;
@@ -103,7 +112,7 @@ module.exports = async (req, res) => {
     });
 
   } catch (error) {
-    console.error('Error fetching directions:', error);
-    return res.status(500).json({ output: "Sorry, I couldn't retrieve the route. Please try again later." });
+    console.error('Error:', error);
+    return res.status(500).json({ output: "Sorry, an error occurred. Please try again later." });
   }
 };
