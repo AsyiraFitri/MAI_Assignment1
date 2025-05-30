@@ -110,12 +110,12 @@ module.exports = async (req, res) => {
     // If the route is too short, provide a more suitable message
     if (directions.length === 1 && directions[0].includes('head')) {
       return res.status(200).json({
-        output: `Route from ${from} to ${to} is very short. Here’s the direction:\n\n${directions[0]}\n\n📍 Google Maps: ${gmapLink}`
+        output: `📍 Google Maps: ${gmapLink}`
       });
     }
 
     return res.status(200).json({
-      output: `Route from ${from} to ${to}:\n\n${directions.join('\n')}\n\n📍 Google Maps: ${gmapLink}`
+      output: `📍 Google Maps: ${gmapLink}`
     });
 
   } catch (error) {
