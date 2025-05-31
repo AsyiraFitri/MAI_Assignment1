@@ -1,5 +1,6 @@
-import Mailgun from 'mailgun.js';  // Correct import
+import Mailgun from 'mailgun.js';
 import FormData from 'form-data';
+
 // Your Mailgun API credentials
 const MAILGUN_API_KEY = process.env.MAILGUN_API_KEY; // Ensure your Mailgun API key is set in your environment variables
 const DOMAIN = 'sandbox4104537bb7e6480a99f650fedb08fcae.mailgun.org'; // Replace with your actual Mailgun domain
@@ -10,11 +11,11 @@ const mg = mailgun.client({ username: 'api', key: MAILGUN_API_KEY });
 export default async function handler(req, res) {
   if (req.method === 'POST') {
     try {
-      // Extract data from the request body sent by Watsonx Assistant
-      const { raiseEmail, raiseName, raiseIssue, raiseUrgent } = req.body;
+      // Extract data from the request body sent by Watson Assistant
+      const { raiseEmail, raiseIssue, raiseName, raiseUrgent } = req.body;
 
       // Check if all required fields are present
-      if (!raiseEmail || !raiseName || !raiseIssue) {
+      if (!raiseEmail || !raiseIssue || !raiseName) {
         return res.status(400).json({ error: 'Missing required fields' });
       }
 
