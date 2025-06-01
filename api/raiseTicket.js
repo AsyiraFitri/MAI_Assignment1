@@ -7,6 +7,8 @@ const DOMAIN = 'sandbox4104537bb7e6480a99f650fedb08fcae.mailgun.org';
 
 const mailgun = new Mailgun(FormData);
 const mg = mailgun.client({ username: 'api', key: MAILGUN_API_KEY });
+console.log('Mailgun API Key:', MAILGUN_API_KEY);
+console.log('Mailgun Domain:', DOMAIN);
 
 module.exports = async function handler(req, res) {
   if (req.method === 'POST') {
@@ -38,7 +40,7 @@ Support Team
 `;
 
       const messageData = {
-        from: 'Support <postmaster@sandbox4104537bb7e6480a99f650fedb08fcae.mailgun.org>',
+        from: 'mai p02 grp05 <mai.apr25.p02.gp05@gmail.com>',
         to: raiseEmail,
         subject: subject,
         text: emailBody,
