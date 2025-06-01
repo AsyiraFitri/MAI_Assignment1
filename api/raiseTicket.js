@@ -40,7 +40,7 @@ Support Team
 `;
 
       const messageData = {
-        from: 'mai p02 grp05 <mai.apr25.p02.gp05@gmail.com>',
+        from: 'Mailgun Sandbox <postmaster@sandbox4104537bb7e6480a99f650fedb08fcae.mailgun.org>',
         to: raiseEmail,
         subject: subject,
         text: emailBody,
