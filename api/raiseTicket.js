@@ -1,11 +1,11 @@
-import Mailgun from 'mailgun.js';
-import formData from 'form-data';
+const Mailgun = require('mailgun.js');
+const FormData = require('form-data');
 
 // Your Mailgun API credentials
 const MAILGUN_API_KEY = process.env.MAILGUN_API_KEY; // Ensure your Mailgun API key is set in your environment variables
 const DOMAIN = 'sandbox4104537bb7e6480a99f650fedb08fcae.mailgun.org'; // Replace with your actual Mailgun domain
 
-const mailgun = new Mailgun(formData);
+const mailgun = new Mailgun(FormData);
 const mg = mailgun.client({ username: 'api', key: MAILGUN_API_KEY });
 
 export default async function handler(req, res) {
