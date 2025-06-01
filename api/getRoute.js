@@ -1,4 +1,4 @@
-import axios from 'axios';
+const axios = require('axios');
 
 // Replace with your Google API key
 const GOOGLE_API_KEY = 'AIzaSyAOanXt4eoGWy6z4Au9phjX3AGhMfdfbf8';
